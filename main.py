@@ -7,7 +7,7 @@ import json
 class City:
     def __init__(self, name, temperature, atmospheric_pressure):
         self.name = name
-        self.temperature = temperature.copy()
+        self.temperature = temperature
         self.atmospheric_pressure = atmospheric_pressure
 
 
@@ -54,11 +54,10 @@ def AjsonInfo(resp, name): #transcripting informations (actual weather)
 
 def actualWeather(name):
     resp = AsendingRequest(name)
-    print(resp)
     city_info = AjsonInfo(resp, name)
     print("{} - temperature: {}K ; atmospheric pressure: {}hPa".format(city_info.name, city_info.temperature, city_info.atmospheric_pressure))
 
 if __name__ == '__main__':
     name = 'Krakow' #example
     actualWeather(name)
-    weatherForecast(name)
+    #weatherForecast(name)
