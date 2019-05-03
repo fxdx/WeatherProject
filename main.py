@@ -12,7 +12,7 @@ class City:
 
 
 def sendingRequest(name):
-    api_key = "3946234ea602bd35b44f48feed6625c4"
+    api_key = ""
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     city_name = name
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
