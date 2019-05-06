@@ -1,7 +1,6 @@
-import numpy
+import matplotlib.pyplot as plt
 import matplotlib
 import requests
-import json
 
 
 class Forecast:
@@ -13,7 +12,7 @@ class Forecast:
         print("{}".format(self.name))
         forecast_data = ''
         for key, value in self.data.items():
-            forecast_data += 'Date: {}: Temperature - {}'.format(key, value)
+            forecast_data += 'Date: {}: Temperature - {}K'.format(key, value)
         return forecast_data
 
 class City:
@@ -32,18 +31,16 @@ def FsendingRequest(name):
     base_url = "http://api.openweathermap.org/data/2.5/forecast?"
     city_name = name
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
-    print(complete_url)
     resp = requests.get(complete_url)
     return resp
 
 def FjsonInfo(resp, name):
     response = resp.json()
     if response['cod'] != '404':
-        dates = dict()
+        dates_temperatures = dict()
         for item in response['list']:
-            dates[item['dt_txt']] = item['main']
-        forecast_data = Forecast(name, dates)
-        print(dates)
+            dates_temperatures[item['dt_txt']] = item['main']['temp']
+        forecast_data = Forecast(name, dates_temperatures)
         return forecast_data
     else:
         print('city not found')
@@ -52,6 +49,7 @@ def weatherForecast(name):
     resp = FsendingRequest(name)
     city_info = FjsonInfo(resp, name)
     print(city_info)
+    return city_info
 
 
 def AsendingRequest(name): #requesting for data (actual weather)
@@ -78,7 +76,18 @@ def actualWeather(name):
     city_info = AjsonInfo(resp, name)
     print(city_info)
 
+def graph_plotting(dates_temperatures): #setting graph, doesn't work (yet)
+    plt.plot(dates_temperatures.keys(), dates_temperatures.values())
+    plt.set_title('Weather Forecast')
+    plt.legend(loc='upper left')
+    plt.set_ylabel('Temperature')
+    plt.set_xlim(xmin=dates_temperatures[0], xmax=dates_temperatures[-1])
+    plt.legend(loc=(0.65, 0.8))
+    plt.set_title('Forecast')
+    plt.yaxis.tick_right()
+
 if __name__ == '__main__':
     name = 'Krakow' #example
-    #actualWeather(name)
-    weatherForecast(name)
+    actualWeather(name)
+    data = weatherForecast(name)
+    graph_plotting(data.data)
