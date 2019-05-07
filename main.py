@@ -1,18 +1,17 @@
 import matplotlib.pyplot as plt
-import matplotlib
 import requests
 
 
 class Forecast:
     def __init__(self, name, data):
         self.name = name
-        self.data = data
+        self.data = data #dictionary contains [Date and Hour]: Temperature
 
     def __str__(self):
         print("{}".format(self.name))
         forecast_data = ''
         for key, value in self.data.items():
-            forecast_data += 'Date: {}: Temperature - {}K'.format(key, value)
+            forecast_data += 'Date: {}: Temperature - {}K '.format(key, value)
         return forecast_data
 
 class City:
@@ -48,7 +47,6 @@ def FjsonInfo(resp, name):
 def weatherForecast(name):
     resp = FsendingRequest(name)
     city_info = FjsonInfo(resp, name)
-    print(city_info)
     return city_info
 
 
@@ -76,18 +74,17 @@ def actualWeather(name):
     city_info = AjsonInfo(resp, name)
     print(city_info)
 
-def graph_plotting(dates_temperatures): #setting graph, doesn't work (yet)
-    plt.plot(dates_temperatures.keys(), dates_temperatures.values())
-    plt.set_title('Weather Forecast')
-    plt.legend(loc='upper left')
-    plt.set_ylabel('Temperature')
-    plt.set_xlim(xmin=dates_temperatures[0], xmax=dates_temperatures[-1])
-    plt.legend(loc=(0.65, 0.8))
-    plt.set_title('Forecast')
-    plt.yaxis.tick_right()
+def graph_plotting(dates_temperatures, city): #setting graph
+    plt.figure(figsize=(20, 10))
+    plt.bar(range(len(dates_temperatures)), list(dates_temperatures.values()), align='edge', width= 0.5, color='red')
+    plt.xticks(range(len(dates_temperatures)), list(dates_temperatures.keys()))
+    plt.title('{} Weather Forecast {} - {}'.format(city, list(dates_temperatures.keys())[0], list(dates_temperatures.keys())[-1]))
+    plt.tick_params(axis='x', rotation=70)
+    plt.spring()
+    plt.show()
 
 if __name__ == '__main__':
-    name = 'Krakow' #example
-    actualWeather(name)
-    data = weatherForecast(name)
-    graph_plotting(data.data)
+    city = 'Krakow' #example
+    actualWeather(city)
+    forecast_data = weatherForecast(city)
+    graph_plotting(forecast_data.data, city)
