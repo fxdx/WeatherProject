@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import requests
 
-
+#Storing informations about weather forecast
 class Forecast:
     def __init__(self, name, data):
         self.name = name
@@ -14,6 +14,7 @@ class Forecast:
             forecast_data += 'Date: {}: Temperature - {}K '.format(key, value)
         return forecast_data
 
+#Storing informations about actual weather
 class City:
     def __init__(self, name, temperature, atmospheric_pressure):
         self.name = name
@@ -23,7 +24,7 @@ class City:
     def __str__(self):
         return str("{} weather: temperature - {}K; atmospheric pressure - {}hPa".format(self.name, self.temperature, self.atmospheric_pressure))
 
-
+#OpenWeatherMap api request for 5-day forecast
 def FsendingRequest(name):
     k = open('key.txt', 'r', encoding='utf-8-sig') #API key
     api_key = k.read()
@@ -33,6 +34,7 @@ def FsendingRequest(name):
     resp = requests.get(complete_url)
     return resp
 
+#parsing json to dictionary [date and hour] = temperature
 def FjsonInfo(resp, name):
     response = resp.json()
     if response['cod'] != '404':
@@ -44,12 +46,14 @@ def FjsonInfo(resp, name):
     else:
         print('city not found')
 
+
+#geeting 5-day forecast data
 def weatherForecast(name):
     resp = FsendingRequest(name)
     city_info = FjsonInfo(resp, name)
     return city_info
 
-
+#OpenWeatherMap api request for actual weather
 def AsendingRequest(name): #requesting for data (actual weather)
     k = open('key.txt', 'r', encoding='utf-8-sig') #API key
     api_key = k.read()
@@ -58,7 +62,8 @@ def AsendingRequest(name): #requesting for data (actual weather)
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
     resp = requests.get(complete_url)
     return resp
-    
+
+#parsing json to object
 def AjsonInfo(resp, name): #transcripting informations (actual weather)
     response = resp.json()
     if response['cod'] != '404':
@@ -69,13 +74,15 @@ def AjsonInfo(resp, name): #transcripting informations (actual weather)
     else:
         print('city not found')
 
+#printing actual weather
 def actualWeather(name):
     resp = AsendingRequest(name)
     city_info = AjsonInfo(resp, name)
     print(city_info)
 
-def graph_plotting(dates_temperatures, city): #setting graph
-    plt.figure(figsize=(20, 10))
+#setting graph for plotting forecast data
+def graph_plotting(dates_temperatures, city):
+    plt.figure(figsize=(15, 7))
     plt.bar(range(len(dates_temperatures)), list(dates_temperatures.values()), align='edge', width= 0.5, color='red')
     plt.xticks(range(len(dates_temperatures)), list(dates_temperatures.keys()))
     plt.title('{} Weather Forecast {} - {}'.format(city, list(dates_temperatures.keys())[0], list(dates_temperatures.keys())[-1]))
