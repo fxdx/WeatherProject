@@ -83,7 +83,7 @@ def actualWeather(name):
 #setting graph for plotting forecast data
 def graph_plotting(dates_temperatures, city):
     plt.figure(figsize=(15, 7))
-    plt.bar(range(len(dates_temperatures)), list(dates_temperatures.values()), align='edge', width= 0.5, color='red')
+    plt.bar(range(len(dates_temperatures)), [value-273 for value in dates_temperatures.values()], align='edge', width= 0.5, color='red') #Kelvins to Celsius
     plt.xticks(range(len(dates_temperatures)), list(dates_temperatures.keys()))
     plt.title('{} Weather Forecast {} - {}'.format(city, list(dates_temperatures.keys())[0], list(dates_temperatures.keys())[-1]))
     plt.tick_params(axis='x', rotation=70)
@@ -91,7 +91,7 @@ def graph_plotting(dates_temperatures, city):
     plt.show()
 
 if __name__ == '__main__':
-    city = 'Krakow' #example
+    city = input()
     actualWeather(city)
     forecast_data = weatherForecast(city)
     graph_plotting(forecast_data.data, city)
