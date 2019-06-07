@@ -2,23 +2,23 @@ import matplotlib.pyplot as plt
 import requests
 
 
-#Storing informations about weather forecast
+# Storing informations about weather forecast
 class CityForecast:
     def __init__(self, 
                 name, 
                 data):
         self.name = name
-        self.data = data #dictionary contains [Date and Hour]: Temperature
+        self.data = data # Dictionary contains [Date and Hour]: Temperature
 
     def __str__(self):
         print("{}".format(self.name))
         forecast_data = ''
         for key, value in self.data.items():
-            forecast_data += 'Date: {}: Temperature - {}K '.format(key, value)
+            forecast_data += 'Date: {}: Temperature - {}C '.format(key, value-273)
         return forecast_data
 
 
-#Storing informations about actual weather
+# Storing informations about actual weather
 class CityActualWeather:
     def __init__(self, name, 
                 temperature, atmospheric_pressure):
@@ -28,14 +28,14 @@ class CityActualWeather:
         self.atmospheric_pressure = atmospheric_pressure
 
     def __str__(self):
-        return str("{} weather: temperature - {}K; atmospheric pressure - {}hPa".format(self.name, 
-                                                                                        self.temperature, 
+        return str("{} weather: temperature - {}C; atmospheric pressure - {}hPa".format(self.name, 
+                                                                                        self.temperature-273, 
                                                                                         self.atmospheric_pressure))
 
 
-#OpenWeatherMap api request for 5-day forecast
+# OpenWeatherMap api request for 5-day forecast
 def forecast_data_sending_api_request(c_name):
-    k = open('key.txt', 'r', encoding='utf-8-sig') #API key
+    k = open('key.txt', 'r', encoding='utf-8-sig') # API key
     api_key = k.read()
 
     base_url = "http://api.openweathermap.org/data/2.5/forecast?"
@@ -47,7 +47,7 @@ def forecast_data_sending_api_request(c_name):
     return resp
 
 
-#parsing json to dictionary [date and hour] = temperature
+# Parsing json to dictionary [date and hour] = temperature
 def forecast_data_json_parsing(resp, name):
     response = resp.json()
 
@@ -66,7 +66,7 @@ def forecast_data_json_parsing(resp, name):
         print('city not found')
 
 
-#geeting 5-day forecast data
+# Geting 5-day forecast data
 def weather_forecast(name):
     resp = forecast_data_sending_api_request(name)
 
@@ -74,9 +74,9 @@ def weather_forecast(name):
     return city_info
 
 
-#OpenWeatherMap api request for actual weather
-def actual_weather_sending_api_request(c_name): #requesting for data (actual weather)
-    k = open('key.txt', 'r', encoding='utf-8-sig') #API key
+# OpenWeatherMap api request for actual weather
+def actual_weather_sending_api_request(c_name): # Requesting for data (actual weather)
+    k = open('key.txt', 'r', encoding='utf-8-sig') # API key
     api_key = k.read()
 
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
@@ -90,8 +90,8 @@ def actual_weather_sending_api_request(c_name): #requesting for data (actual wea
     return json_response
 
 
-#parsing json to object
-def actual_weather_json_parsing(resp, name): #transcripting informations (actual weather)
+# Parsing json to object
+def actual_weather_json_parsing(resp, name): # Transcripting informations (actual weather)
     response = resp.json()
 
     if response['cod'] != '404':
@@ -106,7 +106,7 @@ def actual_weather_json_parsing(resp, name): #transcripting informations (actual
         print('city not found')
 
 
-#printing actual weather
+# Printing actual weather
 def actualWeather(name):
     json_response = actual_weather_sending_api_request(name)
 
@@ -115,11 +115,11 @@ def actualWeather(name):
     print(city_info)
 
 
-#setting graph for plotting forecast data
+# Setting graph for plotting forecast data
 def graph_plotting(dates_temperatures, city):
     plt.figure(figsize=(15, 7))
     plt.bar(range(len(dates_temperatures)), [value-273 for value in dates_temperatures.values()], align='edge',
-                                             width= 0.5, color='red') #Kelvins to Celsius
+                                             width= 0.5, color='red') # Kelvins to Celsius
 
     plt.xticks(range(len(dates_temperatures)), list(dates_temperatures.keys()))
 
