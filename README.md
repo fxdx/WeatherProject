@@ -1,1 +1,1 @@
-Weather forecast (actual also) using OpenWeatherMap, numpy and matplotlib
+Actual weather and forecast with basic user interface using matplotlib, OpenWeatherMap API and Kivy.
