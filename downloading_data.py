@@ -107,12 +107,12 @@ def actual_weather_json_parsing(resp, name): # Transcripting informations (actua
 
 
 # Printing actual weather
-def actualWeather(name):
+def actual_weather_info(name):
     json_response = actual_weather_sending_api_request(name)
 
     city_info = actual_weather_json_parsing(json_response, name)
 
-    print(city_info)
+    return str(city_info)
 
 
 # Setting graph for plotting forecast data
@@ -132,9 +132,9 @@ def graph_plotting(dates_temperatures, city):
 
     plt.show()
 
-
-if __name__ == '__main__':
-    city = input()
-    actualWeather(city)
-    forecast_data = weather_forecast(city)
-    graph_plotting(forecast_data.data, city)
+#testing purposes
+#if __name__ == '__main__':
+    #city = input()
+    #actual_weather_info(city)
+    #forecast_data = weather_forecast(city)
+    #graph_plotting(forecast_data.data, city)

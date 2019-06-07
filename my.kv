@@ -1,0 +1,36 @@
+#:kivy 1.11.0
+
+<MyGrid>:
+
+    GridLayout:
+    
+        cols:1
+        size: root.width, root.height
+
+        city_text_input: city_text_input
+        actual_weather_output: actual_weather_output
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "City: "
+
+            TextInput:
+                id: city_text_input
+                multinline: False
+
+            Button:
+                text:"Show Actual Weather"
+                on_press: root.actual_weather_button()
+
+            Button:
+                text:"Show Forecast Data"
+
+        GridLayout:
+            cols: 1
+
+            TextInput:
+                id: actual_weather_output
+
+                
