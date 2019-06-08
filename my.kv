@@ -3,7 +3,7 @@
 <MyGrid>:
 
     city_text_input: city_text_input
-    actual_weather_output: actual_weather_output
+    weather_output: weather_output
 
     GridLayout:
         cols: 1
@@ -21,16 +21,15 @@
 
             Button:
                 text: "Show Actual Weather"
-                on_press: root.actual_weather_button(city_text_input.text)
+                on_press: root.actual_weather_button_press()
 
             Button:
                 text: "Show Forecast Data"
+                on_press: root.weather_forecast_button_press()
 
         GridLayout:
             cols: 1
 
-            TextInput:
-                id: actual_weather_output
+            Label:
+                id: weather_output
                 text: " "
-
-                

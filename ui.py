@@ -11,12 +11,19 @@ from kivy.properties import ObjectProperty
 
 class MyGrid(Widget):
 
-    actual_weather_output = ObjectProperty()
+    weather_output = ObjectProperty()
     city_text_input = ObjectProperty()
 
-    def actual_weather_button(self, country_name):
-        print(country_name)
-        self.actual_weather_output.text = str(downloading_data.actual_weather_info(self.city_text_input.text))
+    def actual_weather_button_press(self):
+
+        self.weather_output.text = str(downloading_data.actual_weather_info(self.city_text_input.text))
+
+    def weather_forecast_button_press(self):
+
+        forecast_data = downloading_data.weather_forecast(self.city_text_input.text)
+        downloading_data.graph_plotting(forecast_data.data, self.city_text_input.text)
+        
+    
 
 class MyApp(App):
     def build(self):

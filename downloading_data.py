@@ -32,8 +32,8 @@ class CityActualWeather:
 
     def __str__(self):
         return str("{} weather: temperature - {}C; atmospheric pressure - {}hPa".format(self.name, 
-                                                                                        self.temperature-273, 
-                                                                                        self.atmospheric_pressure))
+                                                                                        round(self.temperature-273, 2), 
+                                                                                        round(self.atmospheric_pressure, 2)))
 
 
 # OpenWeatherMap api request for 5-day forecast
@@ -105,12 +105,14 @@ def actual_weather_json_parsing(resp, name): # Transcripting informations (actua
                                     temperature,
                                     atmospheric_pressure)
         return city_info
+        
     else:
-        print('city not found')
+        return 'City not found'
 
 
 # Printing actual weather
 def actual_weather_info(name):
+
     json_response = actual_weather_sending_api_request(name)
 
     city_info = actual_weather_json_parsing(json_response, name)
