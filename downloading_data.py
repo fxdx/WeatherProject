@@ -123,8 +123,12 @@ def actual_weather_info(name):
 # Setting graph for plotting forecast data
 def graph_plotting(dates_temperatures, city):
     plt.figure(figsize=(15, 7))
-    plt.bar(range(len(dates_temperatures)), [value-273 for value in dates_temperatures.values()], align='edge',
-                                             width= 0.5, color='red') # Kelvins to Celsius
+
+    plt.bar(range(len(dates_temperatures)), 
+            [value-273 for value in dates_temperatures.values()],
+            align='edge', 
+            width= 0.5, 
+            color='red') # Kelvins to Celsius
 
     plt.xticks(range(len(dates_temperatures)), list(dates_temperatures.keys()))
 
