@@ -1,39 +1,7 @@
 import matplotlib.pyplot as plt
 import requests
-
-
-# Storing informations about weather forecast
-class CityForecast:
-    def __init__(self, 
-                name, 
-                data):
-        
-        self.name = name
-        self.data = data # Dictionary contains [Date and Hour]: Temperature
-
-    def __str__(self):
-        print("{}".format(self.name))
-
-        forecast_data = ''
-        for key, value in self.data.items():
-            forecast_data += 'Date: {}: Temperature - {}C '.format(key, value-273)
-        
-        return forecast_data
-
-
-# Storing informations about actual weather
-class CityActualWeather:
-    def __init__(self, name, 
-                temperature, atmospheric_pressure):
-        
-        self.name = name
-        self.temperature = temperature
-        self.atmospheric_pressure = atmospheric_pressure
-
-    def __str__(self):
-        return str("{} weather: temperature - {}C; atmospheric pressure - {}hPa".format(self.name, 
-                                                                                        round(self.temperature-273, 2), 
-                                                                                        round(self.atmospheric_pressure, 2)))
+import city_forecast
+import city_actual_weather
 
 
 # OpenWeatherMap api request for 5-day forecast
@@ -61,7 +29,7 @@ def forecast_data_json_parsing(resp, name):
         for item in response['list']:
             dates_temperatures[item['dt_txt']] = item['main']['temp']
         
-        forecast_data = CityForecast(name, dates_temperatures)
+        forecast_data = city_forecast.CityForecast(name, dates_temperatures)
 
         return forecast_data
 
@@ -101,7 +69,7 @@ def actual_weather_json_parsing(resp, name): # Transcripting informations (actua
 
         temperature = response['main']['temp']
         atmospheric_pressure = response['main']['pressure']
-        city_info = CityActualWeather(name, 
+        city_info = city_actual_weather.CityActualWeather(name, 
                                     temperature,
                                     atmospheric_pressure)
         return city_info
